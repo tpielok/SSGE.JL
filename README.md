@@ -1,5 +1,9 @@
 # SSGE - Spectral Stein Gradient Estimator
 
+[![Build Status](https://travis-ci.org/tpielok/SSGE.jl.svg?branch=master)](https://travis-ci.org/tpielok/SSGE.jl)
+[![codecov](https://codecov.io/gh/tpielok/SSGE.JL/branch/master/graph/badge.svg)](https://codecov.io/gh/tpielok/SSGE.JL)
+
+
 A Julia implementation of the procedure described in 
 
 Shi, Jiaxin and Sun, Shengyang and Zhu, Jun,
