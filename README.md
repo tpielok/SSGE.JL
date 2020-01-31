@@ -54,10 +54,10 @@ num_eig_fun = 3
 <img width="400px" src="results/cmp_dir.png"/>
 </p>
 
-Comparision of the $L_2$ norm of the differences of the gradients, i.e.
+Display of the L2 norm of the differences of the gradients<!--- This is an HTML comment in Markdown , i.e.
 $$||\nabla \log(q) - \tilde\nabla \log(q)||_2,$$
 where $q \sim \mathcal{N}(\begin{bmatrix} 0 \\ 0 \end{bmatrix},
-\begin{bmatrix} 1 & 0.3 \\ 0.3 & 1 \end{bmatrix})$ yields:
+\begin{bmatrix} 1 & 0.3 \\ 0.3 & 1 \end{bmatrix})$ yields-->:
 
 <p align="center">
 <img width="400px" src="results/diff_dir_norm.png"/>
