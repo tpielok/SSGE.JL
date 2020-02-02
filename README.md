@@ -17,7 +17,7 @@ Proceedings of the 35th International Conference on Machine Learning,
 The settings consist of
 
 * 1000 samples,
-* squared exponential with bandwidth 1000.0 as covariance kernel function,
+* squared exponential with a bandwidth of 1000.0 as covariance kernel function,
 * 3 eigenfunctions.
 
 ```julia

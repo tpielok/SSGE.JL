@@ -4,7 +4,7 @@
 Stores the `num_func` eigenvectors and eigenvalues, with which via the
 Nyström method the solution of Fredholm integral equations of the
 second kind can be approximated regarding the 
-the covariance kernel `cov_kernel. These are constructed from the points
+the covariance kernel `cov_kernel`. These are constructed from the points
 sampled `x_samples`.
 The procedure is described in
 
@@ -16,7 +16,7 @@ Proceedings of the 35th International Conference on Machine Learning,
 
 See also: [`(nyst::Nystroem)(x)`](@ref)
 """
-struct Nystroem{F <: Real, V <: AbstractArray{F, 1}, M <: AbstractArray{F,2}, C <: CovKer}
+struct Nystroem{F <: Real, V <: AbstractVector{F}, M <: AbstractMatrix{F}, C <: CovKer}
     num_samples::Integer
     num_func::Integer
     x_samples::M
@@ -26,7 +26,7 @@ struct Nystroem{F <: Real, V <: AbstractArray{F, 1}, M <: AbstractArray{F,2}, C 
 end
 
 function Nystroem(x_samples::M, num_func::Integer, cov_kernel::C) where {
-        F <: Real, M <: AbstractArray{F,2}, C <: CovKer}
+        F <: Real, M <: AbstractMatrix{F}, C <: CovKer}
     num_samples = size(x_samples, 2)
     
     K = Array{F, 2}(undef, num_samples, num_samples)
@@ -49,8 +49,6 @@ end
 Estimates the corresponding the solution of Fredholm integral equations of the
 second kind of `n` at point `x`.
 """
-(nyst::Nystroem{F, V, M, C})(x::W) where {F <: Real, V <: AbstractArray{F, 1}, 
-    M <: AbstractArray{F,2}, 
-    W <: Vector, C <: CovKer}  = 
+(nyst::Nystroem)(x::W) where {W <: AbstractVector}  = 
     sqrt(nyst.num_samples) .* nyst.eig_val_inv .* 
         ([nyst.cov_kernel(x, nyst.x_samples[:, m]) for m in 1:nyst.num_samples]' * nyst.eig_vec)'

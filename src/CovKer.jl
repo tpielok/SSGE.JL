@@ -18,5 +18,5 @@ end
 
 Evaluates the squared exponential covariance kernel at `(x, y)`.
 """
-(s_e::SqExp{F})(x::V1, y::V2) where {F <: Real, V1 <: Vector, V2 <: Vector} = 
-     exp(dot((x - y),(x - y))*s_e.neg_inv_double_σ_sq)
+(s_e::SqExp)(x::V1, y::V2) where {V1 <: AbstractVector, V2 <: AbstractVector} = 
+    exp(dot((x - y),(x - y))*s_e.neg_inv_double_σ_sq)

@@ -30,7 +30,7 @@ struct SSGEstimator{F <: Real, M <: AbstractMatrix{F}}
 end
 
 function SSGEstimator(x_samples::M, num_eig_func::Integer, cov_kernel::C) where {
-        F <: Real, M <: AbstractArray{F,2}, C <: CovKer} 
+        F <: Real, M <: AbstractMatrix{F}, C <: CovKer} 
     ψ = Nystroem(x_samples, num_eig_func, cov_kernel)
     
     ∇ψ(x) = ForwardDiff.jacobian(ψ, x)
