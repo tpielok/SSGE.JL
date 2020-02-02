@@ -24,8 +24,8 @@ Proceedings of the 35th International Conference on Machine Learning,
 
 See also: [`(ssge::SSGEstimator)(x)`](@ref)
 """
-struct SSGEstimator{F <: Real, M <: AbstractMatrix{F}}
-    ψ::Nystroem
+struct SSGEstimator{F <: Real, V <: AbstractVector{F}, M <: AbstractMatrix{F}, C <: CovKer}
+    ψ::Nystroem{F, V, M, C}
     β::M
 end
 
@@ -41,7 +41,7 @@ function SSGEstimator(x_samples::M, num_eig_func::Integer, cov_kernel::C) where 
     end
     β = -1/ψ.num_samples .* β 
     
-    SSGEstimator{F, M}(ψ, β)
+    SSGEstimator{F, typeof(ψ.eig_val_inv), M, C}(ψ, β)
 end
 
 """
@@ -49,8 +49,7 @@ end
 
 Estimates the corresponding Stein gradient of `ssge` at point `x`.
 """
-(ssge::SSGEstimator{F, M})(x::V) where{F <: Real, M <: AbstractMatrix{F}, 
-    V <: AbstractVector{F}} = 
+(ssge::SSGEstimator)(x::V) where{V <: AbstractVector} = 
     (ssge.ψ(x)' * ssge.β)'
 
 end # module
