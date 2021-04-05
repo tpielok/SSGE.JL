@@ -37,10 +37,10 @@ function Nystroem(x_samples::M, num_func::Integer, cov_kernel::C) where {
     end
     K = Symmetric(K)
     
-    eig_vec_l, eig_val, eig_vec_r = tsvd(K, num_func)
-    
+    eig_val, eig_vec = eigen(K)
+        
     Nystroem{F, typeof(eig_val), M, C}(num_samples, num_func, 
-        x_samples, eig_vec_r, eig_val.^-1, cov_kernel)
+        x_samples, eig_vec[:,(end-(num_func-1)):end], eig_val[(end-(num_func-1)):end].^-1, cov_kernel)
 end
 
 """
