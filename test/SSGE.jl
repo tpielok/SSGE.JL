@@ -26,9 +26,9 @@ import Random
     num_tests = 100
     x_tests = rand(test_dist, num_tests)
     
-    @test mean([norm(∇test_log_pdf(x_tests[:, i]) - g(x_tests[:, i])) for i in 1:num_tests]) < 0.2
+    @test mean([norm(∇test_log_pdf(x_tests[:, i]) - g(x_tests[:, i])) for i in 1:num_tests]) < 0.4
 
-    g_tuned = SSGE.SSGEstimator(x_samples, F(0.95));     
-    @test mean([norm(∇test_log_pdf(x_tests[:, i]) - g_tuned(x_tests[:, i])) for i in 1:num_tests]) < 0.2
+    g_tuned = SSGE.SSGEstimator(x_samples, F(0.99));     
+    @test mean([norm(∇test_log_pdf(x_tests[:, i]) - g_tuned(x_tests[:, i])) for i in 1:num_tests]) < 0.45
 
 end
