@@ -25,21 +25,37 @@ struct Nystroem{F <: Real, V <: AbstractVector{F}, M <: AbstractMatrix{F}, C <: 
     cov_kernel::C
 end
 
-function Nystroem(x_samples::M, num_func::Integer, cov_kernel::C) where {
-        F <: Real, M <: AbstractMatrix{F}, C <: CovKer}
+function compute_eig_K(x_samples::M, cov_kernel::C) where {
+    F <: Real, M <: AbstractMatrix{F}, C <: CovKer}
     num_samples = size(x_samples, 2)
-    
+
     K = Array{F, 2}(undef, num_samples, num_samples)
     for i in 1:num_samples
         for j in i:num_samples
             K[i, j] = cov_kernel(x_samples[:,i], x_samples[:,j])
         end
     end
-    K = Symmetric(K)
-    
-    eig_val, eig_vec = eigen(K)
+
+    eigen(Symmetric(K))
+end
+
+function Nystroem(x_samples::M, num_func::Integer, cov_kernel::C) where {
+        F <: Real, M <: AbstractMatrix{F}, C <: CovKer}    
+    eig_val, eig_vec = compute_eig_K(x_samples, cov_kernel)
         
-    Nystroem{F, typeof(eig_val), M, C}(num_samples, num_func, 
+    Nystroem{F, typeof(eig_val), M, C}(size(x_samples, 2), num_func, 
+        x_samples, eig_vec[:,(end-(num_func-1)):end], eig_val[(end-(num_func-1)):end].^-1, cov_kernel)
+end
+
+function Nystroem(x_samples::M, r_bar::F) where {
+    F <: Real, M <: AbstractMatrix{F}}    
+    
+    cov_kernel = SqExp(median(pairwise(Euclidean(), x_samples, dims=2)))
+    eig_val, eig_vec = compute_eig_K(x_samples, cov_kernel)
+
+    num_func = findfirst(cumsum(reverse(eig_val)/sum(eig_val)) .> r_bar)
+    
+    Nystroem{F, typeof(eig_val), M, typeof(cov_kernel)}(size(x_samples, 2), num_func, 
         x_samples, eig_vec[:,(end-(num_func-1)):end], eig_val[(end-(num_func-1)):end].^-1, cov_kernel)
 end
 

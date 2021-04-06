@@ -1,8 +1,9 @@
 module SSGE
 
 using LinearAlgebra
-using TSVD
 using ForwardDiff
+using Distances
+using Statistics
 
 include("CovKer.jl")
 include("Nystroem.jl")
@@ -42,6 +43,21 @@ function SSGEstimator(x_samples::M, num_eig_func::Integer, cov_kernel::C) where 
     β = -1/ψ.num_samples .* β 
     
     SSGEstimator{F, typeof(ψ.eig_val_inv), M, C}(ψ, β)
+end
+
+function SSGEstimator(x_samples::M, r_bar::F) where {
+    F <: Real, M <: AbstractMatrix{F}} 
+    ψ = Nystroem(x_samples, r_bar)
+
+    ∇ψ(x) = ForwardDiff.jacobian(ψ, x)
+
+    β =  ∇ψ(x_samples[:,1])
+    for i in 2:ψ.num_samples
+    β = β + ∇ψ(x_samples[:,i])
+    end
+    β = -1/ψ.num_samples .* β 
+
+    SSGEstimator{F, typeof(ψ.eig_val_inv), M, typeof(ψ.cov_kernel)}(ψ, β)
 end
 
 """
