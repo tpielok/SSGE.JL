@@ -22,17 +22,17 @@ Evaluates the squared exponential covariance kernel at `(x, y)`.
     exp(dot((x - y),(x - y))*s_e.neg_inv_double_σ_sq)
 
 """
-    (ker<:CovKer)(X)
+    (s_e::SqExp)(X)
 
-Evaluates the kernel for all `(X_i, X_j)`.
+Evaluates the s_e for all `(X_i, X_j)`.
 """
 
-function (ker::C)(x_samples::AbstractMatrix{F}) where {C <: CovKer, F<:Real} 
+function (s_e::SqExp)(x_samples::AbstractMatrix{F}) where {F<:Real} 
     num_samples = size(x_samples, 2)
     K = Array{F, 2}(undef, num_samples, num_samples)
     for i in 1:num_samples
         for j in i:num_samples
-            K[i, j] = ker(x_samples[:,i], x_samples[:,j])
+            K[i, j] = s_e(x_samples[:,i], x_samples[:,j])
         end
     end
     K
