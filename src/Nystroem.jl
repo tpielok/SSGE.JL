@@ -27,8 +27,7 @@ end
 
 function compute_eig_K(x_samples::M, cov_kernel::C) where {
     F <: Real, M <: AbstractMatrix{F}, C <: CovKer}
-    num_samples = size(x_samples, 2)
-
+    
     K = cov_kernel(x_samples)
     eigen(Symmetric(K))
 end
