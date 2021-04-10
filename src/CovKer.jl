@@ -32,7 +32,7 @@ function (ker::C)(x_samples::AbstractMatrix{F}) where {C <: CovKer, F<:Reall}
     K = Array{F, 2}(undef, num_samples, num_samples)
     for i in 1:num_samples
         for j in i:num_samples
-            K[i, j] = cov_kernel(x_samples[:,i], x_samples[:,j])
+            K[i, j] = ker(x_samples[:,i], x_samples[:,j])
         end
     end
     K
