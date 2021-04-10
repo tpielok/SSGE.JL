@@ -27,7 +27,7 @@ Evaluates the squared exponential covariance kernel at `(x, y)`.
 Evaluates the kernel for all `(X_i, X_j)`.
 """
 
-function (ker::C)(x_samples::AbstractMatrix{F}) where {C <: CovKer, F<:Reall} 
+function (ker::C)(x_samples::AbstractMatrix{F}) where {C <: CovKer, F<:Real} 
     num_samples = size(x_samples, 2)
     K = Array{F, 2}(undef, num_samples, num_samples)
     for i in 1:num_samples
